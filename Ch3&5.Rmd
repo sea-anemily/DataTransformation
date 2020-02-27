@@ -1,0 +1,130 @@
+---
+title: "Ch3.8&5"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nycflights13)
+```
+## 3.8 Exercises
+1. the problem with the plot is that we know nothing about the type of cars and it is comparing two continuous variables. It could be improved by color coding the types of vehicles or the engine sizes
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point(aes(color = class))
+```
+
+width and height are the parameters that will control the amount of jitter in geom_jitter
+geom_jitter uses two continuous variables while geom_count uses two discrete variables but both have the same parameters
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot()
+```
+
+
+## 3.9
+```{r}
+ggplot(data = mpg, mapping = aes(x = class,y = hwy)) +
+  geom_boxplot()
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class,y = hwy)) +
+  geom_boxplot() +
+  coord_flip()
+```
+
+```{r}
+nz <- map_data("nz")
+ggplot(nz, aes(long, lat, group = group)) +
+  geom_polygon(fill = "white", color = "black")
+```
+
+```{r}
+ggplot(nz, aes(long, lat, group = group)) +
+  geom_polygon(fill = "white", color = "black") +
+  coord_quickmap()
+```
+
+```{r}
+bar <- ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, fill = cut), show.legend = FALSE, width = 1) + 
+  labs(x = NULL, y = NULL)
+```
+
+## 3.9.1 Exercises
+labs adds labels to the axes
+coord_map tries to retain the idea that the map is spherical on a 2D suface and doesn't retain straight lines whereas quickmap is better for smaller regions because it does preserve straight lines
+geom_abline adds reference lines and coord_fixed specifies the ratio between the representaion of the data on the axes
+
+
+## Chapter 5
+```{r}
+filter(flights, month == 1, day == 1)
+```
+```{r}
+jan1 <- filter(flights, month == 1, day == 1)
+```
+USE two equal signs ==
+with math equations use near() instead of ==
+## 5.2.2
+```{r}
+filter(flights, month == 11 | day ==12)
+```
+
+## 5.2.4 Exercises
+```{r}
+filter(flights, arr_delay == 2 | arr_delay > 2)
+```
+```{r}
+filter(flights, dest == "IAH" | dest == "HOU")
+```
+between will look for a value between two modifiers
+```{r}
+is.na("dep_time")
+```
+no flights are missing a departure time
+
+## 5.3.1 Exercises
+arrange(is.na())
+```{r}
+arrange(flights, desc(dep_delay))
+```
+
+``{r}
+arrange(flights, desc())
+speed not in the data
+
+```{r}
+arrange(flights, desc(distance))
+```
+
+## 5.4
+```{r}
+select(flights, year, month, day)
+```
+the comma is just a list
+```{r}
+select(flights, year:day)
+```
+the colon is all categoriesincluding and between the ones listed 
+```{r}
+select(flights, -(year:day))
+```
+the minus will exclude what is listed
+
+## 5.4.1 Exercises
+select(flights, )
+- dep_time, dep_delay, arr_time, arr_delay
+- - everything else
+```{r}
+select(flights, day, day)
+```
+it just lists it once
+the one of feature might only list one of two similar things like departure delay and arrival delay
+```{r}
+select(flights, contains("TIME"))
+```
